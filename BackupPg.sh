@@ -57,8 +57,8 @@ for Stanza in $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConf} | ${Tr} -d [] | t
       continue
       ;;
     "")
-      ## Full on sunday, diff on other days
-      ## pgbadger is kind enough to do a full if we request a diff and no full exist
+      ## Full on sunday, diff on wednesday and incr on other days
+      ## pgbackrest is kind enough to do a full if we request a diff and no full exist
       ## date +%w return the number of the dayweek, 0 means Sunday
       case "$(${Date} +%w)" in
         0) Action=full;;
