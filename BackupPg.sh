@@ -28,28 +28,43 @@
 ## pg3-path=/var/lib/postgresql/10/main
 ## pg3-host=172.25.105.170
 
-# Restauration depuis le pgbackrest
+# Restore standby from pgbackrest
 ## sudo -u postgres pgbackrest --stanza=main restore --pg1-path=/var/lib/postgresql/10/main --recovery-option=standby_mode=on --recovery-option=primary_conninfo='host=172.25.105.144 port=5432 user=postgres'
+
+# Flag before application update, to restore PITR to a flag
+## select pg_create_restore_point ('maj v1.7');
+# And to restore
+## pgbackrest --stanza=main restore --pg1-path=/var/lib/postgresql/10/restore --type=name --target=main
 
 
 # Binary files
-PgBackRest=/usr/bin/pgbackrest
-Sudo=/usr/bin/sudo
 Date=/bin/date
 Grep=/bin/grep
-Tr=/usr/bin/tr
 Jq=/usr/bin/jq
+PgBackRest=/usr/bin/pgbackrest
+Sudo=/usr/bin/sudo
+Tr=/usr/bin/tr
 
 # Variables
-PgUser=postgres
-PgBackRestConf=/etc/pgbackrest/pgbackrest.conf
-PgBackRestConfDir=/etc/pgbackrest/conf.d/
 DirBackup=/var/lib/pgbackrest/backup
 LogLevel=info
-ExitCode=0
+PgBackRestConf=/etc/pgbackrest/pgbackrest.conf
+PgBackRestConfDir=/etc/pgbackrest/conf.d/
+PgUser=postgres
 WarnTime="1 day"
 
-for Stanza in $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConf} | ${Tr} -d [] | tr '\n' ' ') $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConfDir}/* | ${Tr} -d [] | tr '\n' ' ') ; do
+ExitCode=0
+
+# Test if we want only specific stanzas
+if [ ! -z ${2+x} ]; then
+  # We want ${2} stanzas
+  WantedStanzas=$(echo ${2} | tr ',' ' ')
+else
+  # else we want all of them
+  WantedStanzas=$(echo $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConf} | ${Tr} -d [] | tr '\n' ' ') $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConfDir}/* | ${Tr} -d [] | tr '\n' ' '))
+fi
+
+for Stanza in ${WantedStanzas} ; do
   # Let's verify if the stanza is created
   if [ ! -d ${DirBackup}/${Stanza} ] ; then
     # If not the case, create them
