@@ -98,6 +98,20 @@ for Stanza in ${WantedStanzas} ; do
         *) Action=incr;;
       esac
     ;;
+    help)
+      echo "
+      You can use different things :
+      - $0 info : to get the info for each stanzas
+      - $0 check : to let pgbackrest check each stanzas
+      - $0 monit : to tell your supervision system about the state of your backup
+      - $0 (without args) : to launch default backup for today, it will create the stanza automatically if necessary
+      - $0 full/incr/diff : to force a backup of specified type
+      Default policy for backup is :
+      - full on sunday
+      - diff on wednesday
+      - incr on other days
+      "
+      ;;
     *)
       Action=${1}
       ;;
