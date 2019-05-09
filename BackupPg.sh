@@ -49,7 +49,7 @@ Tr=/usr/bin/tr
 DirBackup=/var/lib/pgbackrest/backup
 LogLevel=info
 PgBackRestConf=/etc/pgbackrest/pgbackrest.conf
-PgBackRestConfDir=/etc/pgbackrest/conf.d/
+PgBackRestConfDir=/etc/pgbackrest/conf.d
 PgUser=postgres
 WarnTime="1 day"
 
@@ -61,7 +61,7 @@ if [ ! -z ${2+x} ]; then
   WantedStanzas=$(echo ${2} | tr ',' ' ')
 else
   # else we want all of them
-  WantedStanzas=$(echo $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConf} | ${Tr} -d [] | tr '\n' ' ') $(${Grep} -P '(?!.*global)^\[' ${PgBackRestConfDir}/* | ${Tr} -d [] | tr '\n' ' '))
+  WantedStanzas=$(echo $(${Grep} --no-filename -P '(?!.*global)^\[' ${PgBackRestConf} | ${Tr} -d [] | tr '\n' ' ') $(${Grep} --no-filename -P '(?!.*global)^\[' ${PgBackRestConfDir}/* | ${Tr} -d [] | tr '\n' ' '))
 fi
 
 for Stanza in ${WantedStanzas} ; do
