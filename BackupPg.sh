@@ -111,6 +111,7 @@ for Stanza in ${WantedStanzas} ; do
       - diff on wednesday
       - incr on other days
       "
+      exit 0
       ;;
     *)
       Action=${1}
