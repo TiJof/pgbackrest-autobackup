@@ -68,7 +68,7 @@ for Stanza in ${WantedStanzas} ; do
   # Let's verify if the stanza is created
   if [ ! -d ${DirBackup}/${Stanza} ] ; then
     # If not the case, create them
-    ${Sudo} -u ${PgUser} ${PgBackRest} --stanza=${Stanza} --log-level-console=${LogLevel} stanza-create || (echo Unable to create Stanza ${Stanza} && exit 1)
+    ${Sudo} -u ${PgUser} ${PgBackRest} --stanza=${Stanza} --log-level-console=${LogLevel} stanza-create --force || (echo Unable to create Stanza ${Stanza} && exit 1)
   fi
 
   case "${1}" in
