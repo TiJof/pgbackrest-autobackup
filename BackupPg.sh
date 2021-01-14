@@ -38,20 +38,20 @@
 
 
 # Binary files
-Date=/bin/date
-Grep=/bin/grep
-Jq=/usr/bin/jq
-PgBackRest=/usr/bin/pgbackrest
-Sudo=/usr/bin/sudo
-Tr=/usr/bin/tr
+readonly Date=/bin/date
+readonly Grep=/bin/grep
+readonly Jq=/usr/bin/jq
+readonly PgBackRest=/usr/bin/pgbackrest
+readonly Sudo=/usr/bin/sudo
+readonly Tr=/usr/bin/tr
 
 # Variables
-DirBackup=/var/lib/pgbackrest/backup
-LogLevel=info
-PgBackRestConf=/etc/pgbackrest/pgbackrest.conf
-PgBackRestConfDir=/etc/pgbackrest/conf.d
-PgUser=postgres
-WarnTime="1 day"
+readonly DirBackup=/var/lib/pgbackrest/backup
+readonly LogLevel=info
+readonly PgBackRestConf=/etc/pgbackrest/pgbackrest.conf
+readonly PgBackRestConfDir=/etc/pgbackrest/conf.d
+readonly PgUser=postgres
+readonly WarnTime="1 day"
 
 ExitCode=0
 
