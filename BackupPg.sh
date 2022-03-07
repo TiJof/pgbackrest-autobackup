@@ -52,6 +52,7 @@ readonly PgBackRestConf=/etc/pgbackrest/pgbackrest.conf
 readonly PgBackRestConfDir=/etc/pgbackrest/conf.d
 readonly PgUser=postgres
 readonly WarnTime="1 day"
+readonly CurrentDay=$(${Date} +%w)
 
 ExitCode=0
 
@@ -92,7 +93,7 @@ for Stanza in ${WantedStanzas} ; do
       ## Full on sunday, diff on wednesday and incr on other days
       ## pgbackrest is kind enough to do a full if we request a diff and no full exist
       ## date +%w return the number of the dayweek, 0 means Sunday
-      case "$(${Date} +%w)" in
+      case "${CurrentDay}" in
         0) Action=full;;
         3) Action=diff;;
         *) Action=incr;;
